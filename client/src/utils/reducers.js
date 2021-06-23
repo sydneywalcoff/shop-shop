@@ -11,6 +11,11 @@ export const reducer = (state, action) => {
                 ...state,
                 products: [...action.products],
             };
+        case UPDATE_CATEGORIES:
+            return {
+                ...state,
+                categories: [...action.categories]
+            }
         default:
             return state;
     }
