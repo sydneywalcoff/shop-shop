@@ -60,6 +60,12 @@ export const reducer = (state, action) => {
                     return product;
                 })
             };
+        case CLEAR_CART:
+            return {
+                ...state,
+                cartOpen: false,
+                cart: []
+            };
         default:
             return state;
     }
