@@ -7,6 +7,7 @@ import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY, ADD_TO_CART, UPDATE_PRODUCTS } 
 import { QUERY_PRODUCTS } from '../utils/queries';
 import spinner from '../assets/spinner.gif';
 import Cart from '../components/Cart';
+import CartItem from '../components/CartItem';
 
 function Detail() {
   const [state, dispatch] = useStoreContext();
@@ -16,13 +17,23 @@ function Detail() {
   
   const { loading, data } = useQuery(QUERY_PRODUCTS);
   
-  const { products } = state;
+  const { products, cart } = state;
 
   const addToCart = () => {
-    dispatch({
-      type: ADD_TO_CART,
-      product: { ...currentProduct, purchaseQuantity: 1 }
-    });
+    const itemInCart = cart.find((CartItem) => CartItem._id === id);
+
+    if(itemInCart) {
+      dispatch({
+        type: UPDATE_CART_QUANTITY,
+        _id: id,
+        purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
+      });
+    } else {
+      dispatch({
+        type: ADD_TO_CART,
+        product: { ...currentProduct, purchaseQuantity: 1 }
+      });
+    }
   };
   
   useEffect(() => {
