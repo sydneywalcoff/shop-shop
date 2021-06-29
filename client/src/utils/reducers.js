@@ -45,7 +45,9 @@ export const reducer = (state, action) => {
                 return product._id !== action._id
             });
             return {
-                
+                ...state,
+                cartOpen: newState.length > 0,
+                cart: newState
             };
         default:
             return state;
