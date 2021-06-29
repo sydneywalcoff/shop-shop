@@ -69,3 +69,13 @@ test('ADD_TO_CART', () => {
     expect(newState.cart.length).toBe(3);
     expect(initialState.cart.length).toBe(2);
 });
+
+test('ADD_MULTIPLE_TO_CART', ()=> {
+    let newState = reducer(initialState, {
+        type: ADD_MULTIPLE_TO_CART,
+        products: [{}, {}]
+    });
+
+    expect(newState.cart.length).toBe(4);
+    expect(initialState.cart.length).toBe(2);
+})
