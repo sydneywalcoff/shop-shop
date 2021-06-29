@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
+import { idbPromise } from '../../utils/helpers';
 
 import { useStoreContext } from '../../utils/GlobalState';
 import { UPDATE_PRODUCTS } from '../../utils/actions';
@@ -19,8 +20,19 @@ function ProductList() {
         type: UPDATE_PRODUCTS,
         products: data.products
       });
+
+      data.products.forEach((product) => {
+        idbPromise('products', 'put', product);
+      })
+    } else if(!loading) {
+      idbPromise('products', 'get').then((products) => {
+        dispatch({
+          type: UPDATE_PRODUCTS,
+          products: products
+        })
+      })
     }
-  }, [data, dispatch]);
+  }, [data, loading, dispatch]);
 
   function filterProducts() {
     if(!currentCategory) {

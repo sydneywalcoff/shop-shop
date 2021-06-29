@@ -28,7 +28,7 @@ export function idbPromise(storeName, method, object) {
 
       tx = db.transaction(storeName, 'readwrite');
 
-      store = tx.objectStore(storename);
+      store = tx.objectStore(storeName);
 
       db.onerror = function(e) {
         console.log('error', e);
