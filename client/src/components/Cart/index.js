@@ -97,10 +97,10 @@ const Cart = ({ dispatch, cart, cartOpen }) => {
 };
 
 const mapStateToProps = (state)  => ({
-    cart: state.reducer.cart,
-    cartOpen: state.reducer.cartOpen,
-    loading: state.reducer.loading,
-    hasErrors: state.reducer.hasErrors
+    cart: state.reducers.cart,
+    cartOpen: state.reducers.cartOpen,
+    loading: state.reducers.loading,
+    hasErrors: state.reducers.hasErrors
 })
 
 export default connect(mapStateToProps)(Cart);

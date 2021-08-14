@@ -6,12 +6,10 @@ import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
 import { idbPromise } from '../../utils/helpers';
 
-import { useStoreContext } from '../../utils/GlobalState';
+import { connect } from 'react-redux';
 import { UPDATE_PRODUCTS } from '../../actions';
 
-function ProductList() {
-  const [state, dispatch] = useStoreContext();
-  const { currentCategory } = state;
+function ProductList({ dispatch, currentCategory, products }) {
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   useEffect(() => {
@@ -36,16 +34,16 @@ function ProductList() {
 
   function filterProducts() {
     if(!currentCategory) {
-      return state.products;
+      return products;
     }
-    return state.products.filter(product => product.category._id === currentCategory);
+    return products.filter(product => product.category._id === currentCategory);
   }
 
 
   return (
     <div className="my-2">
       <h2>Our Products:</h2>
-      {state.products.length ? (
+      {products?.length ? (
         <div className="flex-row">
           {filterProducts().map((product) => (
             <ProductItem
@@ -66,4 +64,9 @@ function ProductList() {
   );
 }
 
-export default ProductList;
+const mapStateToProps = (state) => ({
+  currentCategory: state.reducers.currentCategory,
+  products: state.reducers.products
+})
+
+export default connect(mapStateToProps)(ProductList);
