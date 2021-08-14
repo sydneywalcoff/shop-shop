@@ -1,10 +1,9 @@
 import React from 'react';
-import { useStoreContext } from '../../utils/GlobalState';
 import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from '../../actions';
 import { idbPromise } from '../../utils/helpers';
+import { connect } from 'react-redux';
 
-const CartItem = ({ item }) => {
-    const [, dispatch]= useStoreContext();
+const CartItem = ({ item }, { dispatch }) => {
 
     const removeFromCart = item => {
         dispatch({
@@ -52,5 +51,9 @@ const CartItem = ({ item }) => {
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+    item: state.reducers.products
+})
 
 export default CartItem;

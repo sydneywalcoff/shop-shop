@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { useStoreContext } from '../utils/GlobalState';
+import { connect } from 'react-redux';
 import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY, ADD_TO_CART, UPDATE_PRODUCTS } from '../actions';
 
 import { QUERY_PRODUCTS } from '../utils/queries';
@@ -11,15 +11,12 @@ import CartItem from '../components/CartItem';
 
 import { idbPromise } from "../utils/helpers";
 
-function Detail() {
-  const [state, dispatch] = useStoreContext();
+function Detail({ dispatch, products, cart }) {
   const { id } = useParams();
   
   const [currentProduct, setCurrentProduct] = useState({})
   
   const { loading, data } = useQuery(QUERY_PRODUCTS);
-  
-  const { products, cart } = state;
 
   const addToCart = () => {
     const itemInCart = cart.find((CartItem) => CartItem._id === id);
@@ -55,7 +52,7 @@ function Detail() {
   };
   
   useEffect(() => {
-    if (products.length) {
+    if (products?.length) {
       setCurrentProduct(products.find(product => product._id === id));
     } else if (data) {
       dispatch({
@@ -104,4 +101,8 @@ function Detail() {
   );
 }
 
-export default Detail;
+const mapStateToProps = (state) => ({
+  cart: state.reducers.cart
+});
+
+export default connect(mapStateToProps)(Detail);
