@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import CartItem from '../CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
-import { useStoreContext } from '../../utils/GlobalState';
+import { connect } from 'react-redux';
 import { ADD_MULTIPLE_TO_CART, TOGGLE_CART } from '../../actions';
 import { idbPromise } from '../../utils/helpers';
 import { QUERY_CHECKOUT } from '../../utils/queries';
@@ -11,8 +11,7 @@ import { useLazyQuery } from '@apollo/client';
 
 const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
-const Cart = () => {
-    const [state, dispatch] = useStoreContext();
+const Cart = ({ dispatch, cart, cartOpen }) => {
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
     
     useEffect(() => {
@@ -21,10 +20,10 @@ const Cart = () => {
             dispatch({type: ADD_MULTIPLE_TO_CART, products: [...cart]});
         };
 
-        if (!state.cart.length) {
+        if (!cart.length) {
             getCart();
         }
-    }, [state.cart.length, dispatch]);
+    }, [cart.length, dispatch]);
 
     useEffect(() =>  {
         if(data) {
@@ -40,7 +39,7 @@ const Cart = () => {
 
     function calculateTotal() {
         let sum = 0;
-        state.cart.forEach(item => {
+        cart.forEach(item => {
             sum += item.price * item.purchaseQuantity;
         });
         return sum.toFixed(2);
@@ -49,7 +48,7 @@ const Cart = () => {
     function submitCheckout() {
         const productIds = [];
 
-        state.cart.forEach((item) => {
+        cart.forEach((item) => {
             for (let i=0; i < item.purchaseQuantity; i++) {
                 productIds.push(item._id);
             }
@@ -59,7 +58,7 @@ const Cart = () => {
         });
     }
 
-    if (!state.cartOpen) {
+    if (!cartOpen) {
         return (
             <div className="cart-closed" onClick={toggleCart}>
                 <span role="img" aria-label="cart">🛒</span>
@@ -72,9 +71,9 @@ const Cart = () => {
         <div className="cart">
             <div className="close" onClick={toggleCart}>[close]</div>
             <h2>Shopping Cart</h2>
-            {state.cart.length ? (
+            {cart.length ? (
                 <div>
-                    {state.cart.map(item => (
+                    {cart.map(item => (
                         <CartItem key={item._id} item={item} />
                     ))}
                     <div className='flex-row space-between'>
@@ -97,4 +96,11 @@ const Cart = () => {
     );
 };
 
-export default Cart;
+const mapStateToProps = (state)  => ({
+    cart: state.reducer.cart,
+    cartOpen: state.reducer.cartOpen,
+    loading: state.reducer.loading,
+    hasErrors: state.reducer.hasErrors
+})
+
+export default connect(mapStateToProps)(Cart);
