@@ -3,7 +3,7 @@ import CartItem from '../CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
 import { useStoreContext } from '../../utils/GlobalState';
-import { ADD_MULTIPLE_TO_CART, TOGGLE_CART } from '../../utils/actions';
+import { ADD_MULTIPLE_TO_CART, TOGGLE_CART } from '../../actions';
 import { idbPromise } from '../../utils/helpers';
 import { QUERY_CHECKOUT } from '../../utils/queries';
 import { loadStripe } from '@stripe/stripe-js';

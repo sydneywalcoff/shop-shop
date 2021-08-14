@@ -2,7 +2,7 @@ import React from "react";
 import { useStoreContext } from '../../utils/GlobalState';
 import { Link } from "react-router-dom";
 import { pluralize } from "../../utils/helpers";
-import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
+import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../actions';
 import CartItem from "../CartItem";
 import { idbPromise } from '../../utils/helpers';
 

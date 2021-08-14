@@ -7,7 +7,7 @@ import spinner from '../../assets/spinner.gif';
 import { idbPromise } from '../../utils/helpers';
 
 import { useStoreContext } from '../../utils/GlobalState';
-import { UPDATE_PRODUCTS } from '../../utils/actions';
+import { UPDATE_PRODUCTS } from '../../actions';
 
 function ProductList() {
   const [state, dispatch] = useStoreContext();

@@ -8,6 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 // local imports
 import App from './App';
+import rootReducer from './reducers'
 
 // assets
 import './index.css';
