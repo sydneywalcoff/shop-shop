@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_CATEGORIES } from '../../utils/queries';
 import { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY } from '../../actions';
-import { useStoreContext } from '../../utils/GlobalState';
 import { idbPromise } from '../../utils/helpers';
+import { connect } from 'react-redux';
 
-function CategoryMenu() {
-  const [state, dispatch] = useStoreContext();
-  const { categories } = state;
+function CategoryMenu({ dispatch, categories }) {
   const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
 
   useEffect(() => {
@@ -53,4 +51,8 @@ function CategoryMenu() {
   );
 }
 
-export default CategoryMenu;
+const mapStateToProps = (state) => ({
+  categories: state.reducers.categories
+})
+
+export default connect(mapStateToProps)(CategoryMenu);
