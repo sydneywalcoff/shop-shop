@@ -1,10 +1,8 @@
 // external imports
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { configureStore } from '@reduxjs/toolkit';
 
 // local imports
 import App from './App';
@@ -13,7 +11,7 @@ import rootReducer from './reducers'
 // assets
 import './index.css';
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = configureStore(rootReducer);
 
 render(
   <Provider store={store}>
